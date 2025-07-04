@@ -22,6 +22,9 @@ app.use(cors({
     credentials: true,
 }));
 
+console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
+
+
 app.use('/user', authRouter);
 app.use('/problem',problemRouter);
 app.use('/code',submitRouter)

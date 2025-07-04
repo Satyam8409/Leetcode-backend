@@ -22,12 +22,12 @@ const register=async(req,res)=>{
         res.cookie('token',token)
 
         // res.status(201).send('user registered successfully');
-        const reply={
-            fistName:dbUser.firstName,
-            emailId:dbUser.emailId,
-            _id:dbUser._id,
-            role:req.user.role,
-        }
+        const reply = {
+    firstName: dbUser.firstName,
+    emailId: dbUser.emailId,
+    _id: dbUser._id,
+    role: dbUser.role,
+};
         res.status(200).json({
             user:reply,
             msg:'loggin successfully',
