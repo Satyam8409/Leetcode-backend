@@ -19,7 +19,13 @@ const register=async(req,res)=>{
         const dbUser= await User.create(req.body);
  
         const token=jwt.sign({_id:dbUser.id, emailId:dbUser.emailId},process.env.SECRET_KEY,{expiresIn:'2d'});//jwt token generation
-        res.cookie('token',token)
+        // res.cookie('token',token)
+        res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true
+        });
+
 
         // res.status(201).send('user registered successfully');
         const reply = {
@@ -52,7 +58,13 @@ const login=async (req,res)=>{
         if(!passValid) throw new Error("invalid crediential p");
         
         const token=jwt.sign({_id:dbUser.id, emailId:dbUser.emailId},process.env.SECRET_KEY,{expiresIn:'2d'});//jwt token generation
-        res.cookie('token',token)
+        // res.cookie('token',token)
+        res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true
+        });
+
 
         // res.status(200).send('Logged in successfully');//ye msg jo frontend ko bhej rahe hai isse aacha user ka data send kr denge 
         const reply={
@@ -84,7 +96,14 @@ const logout=async(req,res)=>{
         const payload=jwt.decode(token);
         await redisClient.expireAt(`token:${token}`,payload.exp);
 
-        res.cookie('token', null, {expires:new Date(Date.now())});
+        // res.cookie('token', null, {expires:new Date(Date.now())});
+        res.cookie('token', '', {
+            expires: new Date(0),
+            httpOnly: true,
+            sameSite: "None",
+            secure: true
+        });
+
         res.send('logout successfully')
     }
     catch(err){
